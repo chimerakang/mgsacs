@@ -112,15 +112,6 @@ struct ShipType {
 
 extern const std::map<int, const char*> _ShipType_VALUES_TO_NAMES;
 
-struct Response {
-  enum type {
-    ACCEPTED = 10,
-    REFUSE = 26
-  };
-};
-
-extern const std::map<int, const char*> _Response_VALUES_TO_NAMES;
-
 typedef std::vector<class ServiceInfo>  ServiceList;
 
 class ServiceInfo;
@@ -128,14 +119,6 @@ class ServiceInfo;
 class Location;
 
 class Ship;
-
-class NotFoundException;
-
-class InvalidRequestException;
-
-class UnavailableException;
-
-class TimedOutException;
 
 class RequestException;
 
@@ -378,164 +361,10 @@ inline std::ostream& operator<<(std::ostream& out, const Ship& obj)
   return out;
 }
 
-
-class NotFoundException : public ::apache::thrift::TException {
- public:
-
-  NotFoundException(const NotFoundException&);
-  NotFoundException& operator=(const NotFoundException&);
-  NotFoundException() {
-  }
-
-  virtual ~NotFoundException() throw();
-
-  bool operator == (const NotFoundException & /* rhs */) const
-  {
-    return true;
-  }
-  bool operator != (const NotFoundException &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const NotFoundException & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-  virtual void printTo(std::ostream& out) const;
-  mutable std::string thriftTExceptionMessageHolder_;
-  const char* what() const throw();
-};
-
-void swap(NotFoundException &a, NotFoundException &b);
-
-inline std::ostream& operator<<(std::ostream& out, const NotFoundException& obj)
-{
-  obj.printTo(out);
-  return out;
-}
-
-
-class InvalidRequestException : public ::apache::thrift::TException {
- public:
-
-  InvalidRequestException(const InvalidRequestException&);
-  InvalidRequestException& operator=(const InvalidRequestException&);
-  InvalidRequestException() : why() {
-  }
-
-  virtual ~InvalidRequestException() throw();
-  std::string why;
-
-  void __set_why(const std::string& val);
-
-  bool operator == (const InvalidRequestException & rhs) const
-  {
-    if (!(why == rhs.why))
-      return false;
-    return true;
-  }
-  bool operator != (const InvalidRequestException &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const InvalidRequestException & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-  virtual void printTo(std::ostream& out) const;
-  mutable std::string thriftTExceptionMessageHolder_;
-  const char* what() const throw();
-};
-
-void swap(InvalidRequestException &a, InvalidRequestException &b);
-
-inline std::ostream& operator<<(std::ostream& out, const InvalidRequestException& obj)
-{
-  obj.printTo(out);
-  return out;
-}
-
-
-class UnavailableException : public ::apache::thrift::TException {
- public:
-
-  UnavailableException(const UnavailableException&);
-  UnavailableException& operator=(const UnavailableException&);
-  UnavailableException() {
-  }
-
-  virtual ~UnavailableException() throw();
-
-  bool operator == (const UnavailableException & /* rhs */) const
-  {
-    return true;
-  }
-  bool operator != (const UnavailableException &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const UnavailableException & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-  virtual void printTo(std::ostream& out) const;
-  mutable std::string thriftTExceptionMessageHolder_;
-  const char* what() const throw();
-};
-
-void swap(UnavailableException &a, UnavailableException &b);
-
-inline std::ostream& operator<<(std::ostream& out, const UnavailableException& obj)
-{
-  obj.printTo(out);
-  return out;
-}
-
-
-class TimedOutException : public ::apache::thrift::TException {
- public:
-
-  TimedOutException(const TimedOutException&);
-  TimedOutException& operator=(const TimedOutException&);
-  TimedOutException() {
-  }
-
-  virtual ~TimedOutException() throw();
-
-  bool operator == (const TimedOutException & /* rhs */) const
-  {
-    return true;
-  }
-  bool operator != (const TimedOutException &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const TimedOutException & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-  virtual void printTo(std::ostream& out) const;
-  mutable std::string thriftTExceptionMessageHolder_;
-  const char* what() const throw();
-};
-
-void swap(TimedOutException &a, TimedOutException &b);
-
-inline std::ostream& operator<<(std::ostream& out, const TimedOutException& obj)
-{
-  obj.printTo(out);
-  return out;
-}
-
 typedef struct _RequestException__isset {
-  _RequestException__isset() : code(false), why(false), parameterMap(false) {}
+  _RequestException__isset() : code(false), why(false) {}
   bool code :1;
   bool why :1;
-  bool parameterMap :1;
 } _RequestException__isset;
 
 class RequestException : public ::apache::thrift::TException {
@@ -549,7 +378,6 @@ class RequestException : public ::apache::thrift::TException {
   virtual ~RequestException() throw();
   ErrorCode::type code;
   std::string why;
-  std::map<std::string, std::string>  parameterMap;
 
   _RequestException__isset __isset;
 
@@ -557,15 +385,11 @@ class RequestException : public ::apache::thrift::TException {
 
   void __set_why(const std::string& val);
 
-  void __set_parameterMap(const std::map<std::string, std::string> & val);
-
   bool operator == (const RequestException & rhs) const
   {
     if (!(code == rhs.code))
       return false;
     if (!(why == rhs.why))
-      return false;
-    if (!(parameterMap == rhs.parameterMap))
       return false;
     return true;
   }

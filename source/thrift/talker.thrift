@@ -119,68 +119,57 @@ struct Ship {
 	11: optional string texId,
 }
 
-/// response option
-enum Response {
-	ACCEPTED = 0x0a,
-	REFUSE = 0x1a,
-}
-
-#
-# Exceptions
-# (note that internal server errors will raise a TApplicationException, courtesy of Thrift)
-#
-/** A specific column was requested that does not exist. */
-exception NotFoundException {
-}
-
-/** Invalid request could mean keyspace or column family does not exist, required parameters are missing, or a parameter is malformed.
-    why contains an associated error message.
-*/
-exception InvalidRequestException {
-    1: required string why
-}
-
-/** Not all the replicas required could be created and/or read. */
-exception UnavailableException {
-}
-
-/** RPC timeout was exceeded.  either a node failed mid-operation, or load was too high, or the requested op was too large. */
-exception TimedOutException {
-}
-
-
 /** invalid Request  */
 exception RequestException {
     1: ErrorCode code;
     2: string why;
-    3: map<string, string> parameterMap;
 }
 
-/* service to service talk in whisper */
-service baseService {
-	void ConnectDB()
-    throws (1:RequestException re, 2:TimedOutException te),
-	string FindUid( 1:required string email, 2:required string phoneNo )
-    throws (1:RequestException re, 2:TimedOutException te),
-
-	bool FindEmail( 1:required string email )
-    throws (1:RequestException re, 2:TimedOutException te),
-
-  i32 Ping(),
+/* talk server */
+service talkServer {
 
   /** get the version of server */
-  string GetVersion()
-    throws (1:RequestException re, 2:TimedOutException te);
+  oneway void getVersion();
 
-  void subscribe( 1:required string topic )
-    throws (1:RequestException re, 2:TimedOutException te);
+  /** set user name api */
+  oneway void setUserName(1:required string name );
 
-  void unsubscribe( 1:required string topic)
-    throws (1:RequestException re, 2:TimedOutException te);
+  /** subscribe topic api */
+  oneway void subscribe( 1:required string topic );
+
+  oneway void unsubscribe( 1:required string topic);
 
   /** ship api */
   oneway void postShip( 1:required string channel, 2:required Ship ship);
+}
 
-  oneway void receiveShip( 1:required Ship ship );
+
+/* talk client */
+service talkClient {
+
+  /** get the version of server */
+  oneway void on_getVersion_succeeded(1:required string version);
+  oneway void on_getVersion_failed(1:required string why);
+
+
+  /** set user name api */
+  oneway void on_setUserName_succeeded(1:required i64 userId);
+  oneway void on_setUserName_failed(1:required string why );
+
+
+  /** subscribe topic api */
+  oneway void on_subscribe(1:required i64 topicId);
+  oneway void on_subscribe_failed( 1:required string why );
+
+  /** unsubscribe topic api */
+  oneway void on_unsubscribe_succeeded();
+  oneway void on_unsubscribe_failed( 1:required string why);
+
+  /** ship api */
+  /// called, when a subscribe ship posted by another
+  oneway void on_subscribeShip(1:required string name, 2:required Ship ship );
+
+  oneway void on_subscribeShip_failed( 1:required RequestException exp );
+
 
 }

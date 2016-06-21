@@ -175,16 +175,6 @@ const char* _kShipTypeNames[] = {
 };
 const std::map<int, const char*> _ShipType_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(12, _kShipTypeValues, _kShipTypeNames), ::apache::thrift::TEnumIterator(-1, NULL, NULL));
 
-int _kResponseValues[] = {
-  Response::ACCEPTED,
-  Response::REFUSE
-};
-const char* _kResponseNames[] = {
-  "ACCEPTED",
-  "REFUSE"
-};
-const std::map<int, const char*> _Response_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(2, _kResponseValues, _kResponseNames), ::apache::thrift::TEnumIterator(-1, NULL, NULL));
-
 
 ServiceInfo::~ServiceInfo() throw() {
 }
@@ -795,322 +785,6 @@ void Ship::printTo(std::ostream& out) const {
 }
 
 
-NotFoundException::~NotFoundException() throw() {
-}
-
-
-uint32_t NotFoundException::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    xfer += iprot->skip(ftype);
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t NotFoundException::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("NotFoundException");
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-void swap(NotFoundException &a, NotFoundException &b) {
-  using ::std::swap;
-  (void) a;
-  (void) b;
-}
-
-NotFoundException::NotFoundException(const NotFoundException& other7) : TException() {
-  (void) other7;
-}
-NotFoundException& NotFoundException::operator=(const NotFoundException& other8) {
-  (void) other8;
-  return *this;
-}
-void NotFoundException::printTo(std::ostream& out) const {
-  using ::apache::thrift::to_string;
-  out << "NotFoundException(";
-  out << ")";
-}
-
-const char* NotFoundException::what() const throw() {
-  try {
-    std::stringstream ss;
-    ss << "TException - service has thrown: " << *this;
-    this->thriftTExceptionMessageHolder_ = ss.str();
-    return this->thriftTExceptionMessageHolder_.c_str();
-  } catch (const std::exception&) {
-    return "TException - service has thrown: NotFoundException";
-  }
-}
-
-
-InvalidRequestException::~InvalidRequestException() throw() {
-}
-
-
-void InvalidRequestException::__set_why(const std::string& val) {
-  this->why = val;
-}
-
-uint32_t InvalidRequestException::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-  bool isset_why = false;
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->why);
-          isset_why = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  if (!isset_why)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  return xfer;
-}
-
-uint32_t InvalidRequestException::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("InvalidRequestException");
-
-  xfer += oprot->writeFieldBegin("why", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->why);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-void swap(InvalidRequestException &a, InvalidRequestException &b) {
-  using ::std::swap;
-  swap(a.why, b.why);
-}
-
-InvalidRequestException::InvalidRequestException(const InvalidRequestException& other9) : TException() {
-  why = other9.why;
-}
-InvalidRequestException& InvalidRequestException::operator=(const InvalidRequestException& other10) {
-  why = other10.why;
-  return *this;
-}
-void InvalidRequestException::printTo(std::ostream& out) const {
-  using ::apache::thrift::to_string;
-  out << "InvalidRequestException(";
-  out << "why=" << to_string(why);
-  out << ")";
-}
-
-const char* InvalidRequestException::what() const throw() {
-  try {
-    std::stringstream ss;
-    ss << "TException - service has thrown: " << *this;
-    this->thriftTExceptionMessageHolder_ = ss.str();
-    return this->thriftTExceptionMessageHolder_.c_str();
-  } catch (const std::exception&) {
-    return "TException - service has thrown: InvalidRequestException";
-  }
-}
-
-
-UnavailableException::~UnavailableException() throw() {
-}
-
-
-uint32_t UnavailableException::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    xfer += iprot->skip(ftype);
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t UnavailableException::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("UnavailableException");
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-void swap(UnavailableException &a, UnavailableException &b) {
-  using ::std::swap;
-  (void) a;
-  (void) b;
-}
-
-UnavailableException::UnavailableException(const UnavailableException& other11) : TException() {
-  (void) other11;
-}
-UnavailableException& UnavailableException::operator=(const UnavailableException& other12) {
-  (void) other12;
-  return *this;
-}
-void UnavailableException::printTo(std::ostream& out) const {
-  using ::apache::thrift::to_string;
-  out << "UnavailableException(";
-  out << ")";
-}
-
-const char* UnavailableException::what() const throw() {
-  try {
-    std::stringstream ss;
-    ss << "TException - service has thrown: " << *this;
-    this->thriftTExceptionMessageHolder_ = ss.str();
-    return this->thriftTExceptionMessageHolder_.c_str();
-  } catch (const std::exception&) {
-    return "TException - service has thrown: UnavailableException";
-  }
-}
-
-
-TimedOutException::~TimedOutException() throw() {
-}
-
-
-uint32_t TimedOutException::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    xfer += iprot->skip(ftype);
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t TimedOutException::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("TimedOutException");
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-void swap(TimedOutException &a, TimedOutException &b) {
-  using ::std::swap;
-  (void) a;
-  (void) b;
-}
-
-TimedOutException::TimedOutException(const TimedOutException& other13) : TException() {
-  (void) other13;
-}
-TimedOutException& TimedOutException::operator=(const TimedOutException& other14) {
-  (void) other14;
-  return *this;
-}
-void TimedOutException::printTo(std::ostream& out) const {
-  using ::apache::thrift::to_string;
-  out << "TimedOutException(";
-  out << ")";
-}
-
-const char* TimedOutException::what() const throw() {
-  try {
-    std::stringstream ss;
-    ss << "TException - service has thrown: " << *this;
-    this->thriftTExceptionMessageHolder_ = ss.str();
-    return this->thriftTExceptionMessageHolder_.c_str();
-  } catch (const std::exception&) {
-    return "TException - service has thrown: TimedOutException";
-  }
-}
-
-
 RequestException::~RequestException() throw() {
 }
 
@@ -1121,10 +795,6 @@ void RequestException::__set_code(const ErrorCode::type val) {
 
 void RequestException::__set_why(const std::string& val) {
   this->why = val;
-}
-
-void RequestException::__set_parameterMap(const std::map<std::string, std::string> & val) {
-  this->parameterMap = val;
 }
 
 uint32_t RequestException::read(::apache::thrift::protocol::TProtocol* iprot) {
@@ -1150,9 +820,9 @@ uint32_t RequestException::read(::apache::thrift::protocol::TProtocol* iprot) {
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast15;
-          xfer += iprot->readI32(ecast15);
-          this->code = (ErrorCode::type)ecast15;
+          int32_t ecast7;
+          xfer += iprot->readI32(ecast7);
+          this->code = (ErrorCode::type)ecast7;
           this->__isset.code = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1162,29 +832,6 @@ uint32_t RequestException::read(::apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->why);
           this->__isset.why = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->parameterMap.clear();
-            uint32_t _size16;
-            ::apache::thrift::protocol::TType _ktype17;
-            ::apache::thrift::protocol::TType _vtype18;
-            xfer += iprot->readMapBegin(_ktype17, _vtype18, _size16);
-            uint32_t _i20;
-            for (_i20 = 0; _i20 < _size16; ++_i20)
-            {
-              std::string _key21;
-              xfer += iprot->readString(_key21);
-              std::string& _val22 = this->parameterMap[_key21];
-              xfer += iprot->readString(_val22);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.parameterMap = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1214,19 +861,6 @@ uint32_t RequestException::write(::apache::thrift::protocol::TProtocol* oprot) c
   xfer += oprot->writeString(this->why);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("parameterMap", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->parameterMap.size()));
-    std::map<std::string, std::string> ::const_iterator _iter23;
-    for (_iter23 = this->parameterMap.begin(); _iter23 != this->parameterMap.end(); ++_iter23)
-    {
-      xfer += oprot->writeString(_iter23->first);
-      xfer += oprot->writeString(_iter23->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1236,21 +870,18 @@ void swap(RequestException &a, RequestException &b) {
   using ::std::swap;
   swap(a.code, b.code);
   swap(a.why, b.why);
-  swap(a.parameterMap, b.parameterMap);
   swap(a.__isset, b.__isset);
 }
 
-RequestException::RequestException(const RequestException& other24) : TException() {
-  code = other24.code;
-  why = other24.why;
-  parameterMap = other24.parameterMap;
-  __isset = other24.__isset;
+RequestException::RequestException(const RequestException& other8) : TException() {
+  code = other8.code;
+  why = other8.why;
+  __isset = other8.__isset;
 }
-RequestException& RequestException::operator=(const RequestException& other25) {
-  code = other25.code;
-  why = other25.why;
-  parameterMap = other25.parameterMap;
-  __isset = other25.__isset;
+RequestException& RequestException::operator=(const RequestException& other9) {
+  code = other9.code;
+  why = other9.why;
+  __isset = other9.__isset;
   return *this;
 }
 void RequestException::printTo(std::ostream& out) const {
@@ -1258,7 +889,6 @@ void RequestException::printTo(std::ostream& out) const {
   out << "RequestException(";
   out << "code=" << to_string(code);
   out << ", " << "why=" << to_string(why);
-  out << ", " << "parameterMap=" << to_string(parameterMap);
   out << ")";
 }
 
