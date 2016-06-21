@@ -20,7 +20,7 @@ ELSE( THRIFT_LIBS AND THRIFT_INCLUDE_DIR)
 
   IF(WIN32 AND MSVC)
     SET(_ThriftLinkDir $ENV{SystemDrive}/Thrift-Win32/lib )
-  
+
     find_path(THRIFT_INCLUDE_DIR
       NAMES
         thrift/Thrift.h
@@ -28,7 +28,7 @@ ELSE( THRIFT_LIBS AND THRIFT_INCLUDE_DIR)
         $ENV{ProgramFiles}/Thrift-Win32/include
         $ENV{SystemDrive}/Thrift-Win32/include
     )
-  
+
     find_library(THRIFT_LIB
       NAMES
         thrift
@@ -44,7 +44,7 @@ ELSE( THRIFT_LIBS AND THRIFT_INCLUDE_DIR)
         /usr/local/thrift/include
         /opt/local/thrift/include
     )
-  
+
     find_library(THRIFT_LIB
       NAMES
         thrift
@@ -55,25 +55,6 @@ ELSE( THRIFT_LIBS AND THRIFT_INCLUDE_DIR)
         /opt/local/thrift/lib
     )
 
-    find_library(THRIFTNB_LIB
-      NAMES
-        thriftnb
-      PATHS
-        ${_ThriftLinkDir}
-        /usr/lib
-        /usr/local/lib
-        /opt/local/lib
-    )
-
-    find_library(EVENT_LIB
-      NAMES
-        event
-      PATHS
-        /usr/lib
-        /usr/local/lib
-        /opt/local/lib
-    )
-    
   ENDIF(WIN32 AND MSVC)
 
   set(THRIFT_LIBS
