@@ -9,11 +9,11 @@
 namespace kiwi {
 
 
-talkClient_on_getVersion_succeeded_args::~talkClient_on_getVersion_succeeded_args() throw() {
+talkClient_on_getVersion_args::~talkClient_on_getVersion_args() throw() {
 }
 
 
-uint32_t talkClient_on_getVersion_succeeded_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t talkClient_on_getVersion_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -57,10 +57,10 @@ uint32_t talkClient_on_getVersion_succeeded_args::read(::apache::thrift::protoco
   return xfer;
 }
 
-uint32_t talkClient_on_getVersion_succeeded_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t talkClient_on_getVersion_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("talkClient_on_getVersion_succeeded_args");
+  xfer += oprot->writeStructBegin("talkClient_on_getVersion_args");
 
   xfer += oprot->writeFieldBegin("version", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString(this->version);
@@ -72,14 +72,14 @@ uint32_t talkClient_on_getVersion_succeeded_args::write(::apache::thrift::protoc
 }
 
 
-talkClient_on_getVersion_succeeded_pargs::~talkClient_on_getVersion_succeeded_pargs() throw() {
+talkClient_on_getVersion_pargs::~talkClient_on_getVersion_pargs() throw() {
 }
 
 
-uint32_t talkClient_on_getVersion_succeeded_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t talkClient_on_getVersion_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("talkClient_on_getVersion_succeeded_pargs");
+  xfer += oprot->writeStructBegin("talkClient_on_getVersion_pargs");
 
   xfer += oprot->writeFieldBegin("version", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString((*(this->version)));
@@ -825,17 +825,17 @@ uint32_t talkClient_on_subscribeShip_failed_pargs::write(::apache::thrift::proto
   return xfer;
 }
 
-void talkClientClient::on_getVersion_succeeded(const std::string& version)
+void talkClientClient::on_getVersion(const std::string& version)
 {
-  send_on_getVersion_succeeded(version);
+  send_on_getVersion(version);
 }
 
-void talkClientClient::send_on_getVersion_succeeded(const std::string& version)
+void talkClientClient::send_on_getVersion(const std::string& version)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("on_getVersion_succeeded", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+  oprot_->writeMessageBegin("on_getVersion", ::apache::thrift::protocol::T_ONEWAY, cseqid);
 
-  talkClient_on_getVersion_succeeded_pargs args;
+  talkClient_on_getVersion_pargs args;
   args.version = &version;
   args.write(oprot_);
 
@@ -1034,38 +1034,38 @@ bool talkClientProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* ip
   return true;
 }
 
-void talkClientProcessor::process_on_getVersion_succeeded(int32_t, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol*, void* callContext)
+void talkClientProcessor::process_on_getVersion(int32_t, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol*, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("talkClient.on_getVersion_succeeded", callContext);
+    ctx = this->eventHandler_->getContext("talkClient.on_getVersion", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "talkClient.on_getVersion_succeeded");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "talkClient.on_getVersion");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "talkClient.on_getVersion_succeeded");
+    this->eventHandler_->preRead(ctx, "talkClient.on_getVersion");
   }
 
-  talkClient_on_getVersion_succeeded_args args;
+  talkClient_on_getVersion_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "talkClient.on_getVersion_succeeded", bytes);
+    this->eventHandler_->postRead(ctx, "talkClient.on_getVersion", bytes);
   }
 
   try {
-    iface_->on_getVersion_succeeded(args.version);
+    iface_->on_getVersion(args.version);
   } catch (const std::exception&) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "talkClient.on_getVersion_succeeded");
+      this->eventHandler_->handlerError(ctx, "talkClient.on_getVersion");
     }
     return;
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->asyncComplete(ctx, "talkClient.on_getVersion_succeeded");
+    this->eventHandler_->asyncComplete(ctx, "talkClient.on_getVersion");
   }
 
   return;
@@ -1411,18 +1411,18 @@ void talkClientProcessor::process_on_subscribeShip_failed(int32_t, ::apache::thr
   return processor;
 }
 
-void talkClientConcurrentClient::on_getVersion_succeeded(const std::string& version)
+void talkClientConcurrentClient::on_getVersion(const std::string& version)
 {
-  send_on_getVersion_succeeded(version);
+  send_on_getVersion(version);
 }
 
-void talkClientConcurrentClient::send_on_getVersion_succeeded(const std::string& version)
+void talkClientConcurrentClient::send_on_getVersion(const std::string& version)
 {
   int32_t cseqid = 0;
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
-  oprot_->writeMessageBegin("on_getVersion_succeeded", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+  oprot_->writeMessageBegin("on_getVersion", ::apache::thrift::protocol::T_ONEWAY, cseqid);
 
-  talkClient_on_getVersion_succeeded_pargs args;
+  talkClient_on_getVersion_pargs args;
   args.version = &version;
   args.write(oprot_);
 

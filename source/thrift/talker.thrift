@@ -148,7 +148,7 @@ service talkServer {
 service talkClient {
 
   /** get the version of server */
-  oneway void on_getVersion_succeeded(1:required string version);
+  oneway void on_getVersion(1:required string version);
   oneway void on_getVersion_failed(1:required string why);
 
 

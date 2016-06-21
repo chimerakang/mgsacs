@@ -27,9 +27,9 @@ class talkClientHandler : virtual public talkClientIf {
    * 
    * @param version
    */
-  void on_getVersion_succeeded(const std::string& version) {
+  void on_getVersion(const std::string& version) {
     // Your implementation goes here
-    printf("on_getVersion_succeeded\n");
+    printf("on_getVersion\n");
   }
 
   void on_getVersion_failed(const std::string& why) {

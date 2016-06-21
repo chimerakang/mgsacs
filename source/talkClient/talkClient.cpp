@@ -4,27 +4,29 @@
 
 #include <iostream>
 
-#include <betabugs/networking/thrift_asio_client.hpp>
-#include <chat_client.h>
-#include <chat_server.h>
+#include "../include/thrift_asio_client.hpp"
+
+/// gen by thrift
+#include <talkServer.h>
+#include <talkClient.h>
 #include <boost/asio.hpp>
 #include <thread>
 
 
-class chat_client_handler : public betabugs::networking::thrift_asio_client<
-	example::chat::chat_serverClient,
-	example::chat::chat_clientProcessor,
-	example::chat::chat_clientIf
+class talkClient_handler : public betabugs::networking::thrift_asio_client<
+	kiwi::talkServerClient,
+	kiwi::talkClientProcessor,
+	kiwi::talkClientIf
 >
 {
   public:
 	using betabugs::networking::thrift_asio_client<
-		example::chat::chat_serverClient,
-		example::chat::chat_clientProcessor,
-		example::chat::chat_clientIf
+		kiwi::talkServerClient,
+		kiwi::talkClientProcessor,
+		kiwi::talkClientIf
 	>::thrift_asio_client;
 
-	chat_client_handler(
+	talkClient_handler(
 		boost::asio::io_service& io_service,
 		const std::string& host_name,
 		const std::string& service_name
@@ -35,26 +37,50 @@ class chat_client_handler : public betabugs::networking::thrift_asio_client<
 	{
 	}
 
+	virtual void on_getVersion(const std::string& version) override {
 
-	virtual void on_set_user_name_failed(const std::string& why) override
-	{
+	}
+
+	virtual void on_getVersion_failed(const std::string& why) override {
+
+	}
+
+	virtual void on_setUserName_failed(const std::string& why) override {
 		std::cerr << "setting user name failed: " << why << std::endl;
 		read_username();
 	}
 
-	virtual void on_set_user_name_succeeded() override
+	virtual void on_setUserName_succeeded(const int64_t userId) override
 	{
 		read_message();
 	}
 
-	virtual void on_message(const std::string& from_user, const std::string& message) override
-	{
-		std::cout << from_user << ": " << message << std::endl;
+	virtual void on_subscribe(const int64_t topicId) override {
+
+	}
+  virtual void on_subscribe_failed(const std::string& why) override {
+
 	}
 
-	virtual void on_send_message_failed(const std::string& why) override
-	{
-		std::cerr << "sending message failed: " << why << std::endl;
+	/**
+	 * unsubscribe topic api
+	 */
+	virtual void on_unsubscribe_succeeded() override {
+
+	}
+
+	virtual void on_unsubscribe_failed(const std::string& why) override {
+
+	}
+
+	virtual void on_subscribeShip(const std::string& from_user, const Ship& ship) override {
+		std::cout << from_user << ": "  << std::endl;
+
+	}
+
+  virtual void on_subscribeShip_failed(const RequestException& exp) override {
+		std::cerr << "sending message failed: " << exp.why << std::endl;
+
 	}
 
 	// called by the transport

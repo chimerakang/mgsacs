@@ -31,7 +31,7 @@ class talkServer_handler
   public:
 		virtual void getVersion() override {
 			assert(current_client_);
-			current_client_->client.on_getVersion_succeeded( KIWI_VERSION );
+			current_client_->client.on_getVersion( KIWI_VERSION );
 		}
 
 		virtual void setUserName(const std::string& name) override {

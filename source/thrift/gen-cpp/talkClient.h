@@ -27,7 +27,7 @@ class talkClientIf {
    * 
    * @param version
    */
-  virtual void on_getVersion_succeeded(const std::string& version) = 0;
+  virtual void on_getVersion(const std::string& version) = 0;
   virtual void on_getVersion_failed(const std::string& why) = 0;
 
   /**
@@ -89,7 +89,7 @@ class talkClientIfSingletonFactory : virtual public talkClientIfFactory {
 class talkClientNull : virtual public talkClientIf {
  public:
   virtual ~talkClientNull() {}
-  void on_getVersion_succeeded(const std::string& /* version */) {
+  void on_getVersion(const std::string& /* version */) {
     return;
   }
   void on_getVersion_failed(const std::string& /* why */) {
@@ -122,30 +122,30 @@ class talkClientNull : virtual public talkClientIf {
 };
 
 
-class talkClient_on_getVersion_succeeded_args {
+class talkClient_on_getVersion_args {
  public:
 
-  talkClient_on_getVersion_succeeded_args(const talkClient_on_getVersion_succeeded_args&);
-  talkClient_on_getVersion_succeeded_args& operator=(const talkClient_on_getVersion_succeeded_args&);
-  talkClient_on_getVersion_succeeded_args() : version() {
+  talkClient_on_getVersion_args(const talkClient_on_getVersion_args&);
+  talkClient_on_getVersion_args& operator=(const talkClient_on_getVersion_args&);
+  talkClient_on_getVersion_args() : version() {
   }
 
-  virtual ~talkClient_on_getVersion_succeeded_args() throw();
+  virtual ~talkClient_on_getVersion_args() throw();
   std::string version;
 
   void __set_version(const std::string& val);
 
-  bool operator == (const talkClient_on_getVersion_succeeded_args & rhs) const
+  bool operator == (const talkClient_on_getVersion_args & rhs) const
   {
     if (!(version == rhs.version))
       return false;
     return true;
   }
-  bool operator != (const talkClient_on_getVersion_succeeded_args &rhs) const {
+  bool operator != (const talkClient_on_getVersion_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const talkClient_on_getVersion_succeeded_args & ) const;
+  bool operator < (const talkClient_on_getVersion_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -153,11 +153,11 @@ class talkClient_on_getVersion_succeeded_args {
 };
 
 
-class talkClient_on_getVersion_succeeded_pargs {
+class talkClient_on_getVersion_pargs {
  public:
 
 
-  virtual ~talkClient_on_getVersion_succeeded_pargs() throw();
+  virtual ~talkClient_on_getVersion_pargs() throw();
   const std::string* version;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -576,8 +576,8 @@ class talkClientClient : virtual public talkClientIf {
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void on_getVersion_succeeded(const std::string& version);
-  void send_on_getVersion_succeeded(const std::string& version);
+  void on_getVersion(const std::string& version);
+  void send_on_getVersion(const std::string& version);
   void on_getVersion_failed(const std::string& why);
   void send_on_getVersion_failed(const std::string& why);
   void on_setUserName_succeeded(const int64_t userId);
@@ -611,7 +611,7 @@ class talkClientProcessor : public ::apache::thrift::TDispatchProcessor {
   typedef  void (talkClientProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
-  void process_on_getVersion_succeeded(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_on_getVersion(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_on_getVersion_failed(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_on_setUserName_succeeded(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_on_setUserName_failed(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -624,7 +624,7 @@ class talkClientProcessor : public ::apache::thrift::TDispatchProcessor {
  public:
   talkClientProcessor(boost::shared_ptr<talkClientIf> iface) :
     iface_(iface) {
-    processMap_["on_getVersion_succeeded"] = &talkClientProcessor::process_on_getVersion_succeeded;
+    processMap_["on_getVersion"] = &talkClientProcessor::process_on_getVersion;
     processMap_["on_getVersion_failed"] = &talkClientProcessor::process_on_getVersion_failed;
     processMap_["on_setUserName_succeeded"] = &talkClientProcessor::process_on_setUserName_succeeded;
     processMap_["on_setUserName_failed"] = &talkClientProcessor::process_on_setUserName_failed;
@@ -662,13 +662,13 @@ class talkClientMultiface : virtual public talkClientIf {
     ifaces_.push_back(iface);
   }
  public:
-  void on_getVersion_succeeded(const std::string& version) {
+  void on_getVersion(const std::string& version) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->on_getVersion_succeeded(version);
+      ifaces_[i]->on_getVersion(version);
     }
-    ifaces_[i]->on_getVersion_succeeded(version);
+    ifaces_[i]->on_getVersion(version);
   }
 
   void on_getVersion_failed(const std::string& why) {
@@ -782,8 +782,8 @@ class talkClientConcurrentClient : virtual public talkClientIf {
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void on_getVersion_succeeded(const std::string& version);
-  void send_on_getVersion_succeeded(const std::string& version);
+  void on_getVersion(const std::string& version);
+  void send_on_getVersion(const std::string& version);
   void on_getVersion_failed(const std::string& why);
   void send_on_getVersion_failed(const std::string& why);
   void on_setUserName_succeeded(const int64_t userId);
