@@ -7,6 +7,7 @@
 /// gen by thrift
 #include "../thrift/gen-cpp/talkServer.h"
 #include "../thrift/gen-cpp/talkClient.h"
+#include "../thrift/gen-cpp/talker_constants.h"
 #include <thread> // for sleep
 
 /**
@@ -31,7 +32,7 @@ class talkServer_handler
   public:
 		virtual void getVersion() override {
 			assert(current_client_);
-			current_client_->client.on_getVersion( KIWI_VERSION );
+            current_client_->client.on_getVersion( kiwi::g_talker_constants.KIWI_VERSION );
 		}
 
 		virtual void setUserName(const std::string& name) override {
@@ -44,25 +45,27 @@ class talkServer_handler
 
 			assert(current_client_);
 			current_client_->user_name = name;
-			current_client_->client.on_setUserName_succeeded();
+            int userId = 123;
+            current_client_->client.on_setUserName_succeeded(userId);
 		}
 
 		virtual void subscribe(const std::string& topic) override {
 			assert(current_client_);
 
-			current_client_->on_subscribe_succeeded(123);
+            int topicId = 456;
+            current_client_->client.on_subscribe(topicId );
 
 		}
 
 		virtual void unsubscribe(const std::string& topic) override {
 			assert(current_client_);
 
-			current_client_->on_unsubscribe_succeeded();
+			current_client_->client.on_unsubscribe_succeeded();
 
 		}
 
 
-		virtual void postShip(const std::string& channel, const Ship& ship) override {
+        virtual void postShip(const std::string& channel, const kiwi::Ship& ship) override {
 			assert(current_client_);
 			for (auto& s : clients_) {
 				if (s.second != current_client_) {
@@ -100,13 +103,13 @@ int main(int argc, char* argv[])
 	(void) argc;
 	(void) argv;
 
-	auto handler = boost::make_shared<chat_server_handler>();
-	auto processor = example::chat::chat_serverProcessor
+	auto handler = boost::make_shared<talkServer_handler>();
+    auto processor = kiwi::talkServerProcessor
 		(
 			handler
 		);
 
-	betabugs::networking::thrift_asio_server<chat_server_handler> server;
+	betabugs::networking::thrift_asio_server<talkServer_handler> server;
 
 	boost::asio::io_service io_service;
 	boost::asio::io_service::work work(io_service);

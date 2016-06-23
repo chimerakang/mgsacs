@@ -194,7 +194,7 @@ int main(int argc, char* argv[])
 	(void) argv;
 
 	std::string host_name = "127.0.0.1";
-	std::string service_name = "1528";
+	std::string service_name = "19999";
 
 	boost::asio::io_service io_service;
 	boost::asio::io_service::work work(io_service);
