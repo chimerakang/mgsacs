@@ -7,8 +7,8 @@
 #include "../include/thrift_asio_client.hpp"
 
 /// gen by thrift
-#include <talkServer.h>
-#include <talkClient.h>
+#include "../thrift/gen-cpp/talkServer.h"
+#include "../thrift/gen-cpp/talkClient.h"
 #include <boost/asio.hpp>
 #include <thread>
 
@@ -73,13 +73,13 @@ class talkClient_handler : public betabugs::networking::thrift_asio_client<
 
 	}
 
-	virtual void on_subscribeShip(const std::string& from_user, const Ship& ship) override {
+	virtual void on_subscribeShip(const std::string& from_user, const kiwi::Ship& ship) override {
 		std::cout << from_user << ": "  << std::endl;
 
 	}
 
-  virtual void on_subscribeShip_failed(const RequestException& exp) override {
-		std::cerr << "sending message failed: " << exp.why << std::endl;
+    virtual void on_subscribeShip_failed(const std::string& why) override {
+		std::cerr << "sending message failed: " << why << std::endl;
 
 	}
 
@@ -120,7 +120,7 @@ class talkClient_handler : public betabugs::networking::thrift_asio_client<
 					std::getline(is, line);
 
 					if (!line.empty())
-						client_.set_user_name(line);
+						client_.setUserName(line);
 					else
 						read_username();
 				}
@@ -142,7 +142,7 @@ class talkClient_handler : public betabugs::networking::thrift_asio_client<
 					std::getline(is, line);
 
 					if (!line.empty())
-						client_.broadcast_message(line);
+						///client_.broadcast_message(line);
 
 					// start over
 					read_message();
@@ -158,7 +158,7 @@ class talkClient_handler : public betabugs::networking::thrift_asio_client<
 * a (suspected) bug in boost::asio::posix::stream_descriptor
 * when used with kevent.
 * */
-void the_blocking_loop(boost::asio::io_service& io_service, chat_client_handler& handler)
+void the_blocking_loop(boost::asio::io_service& io_service, talkClient_handler& handler)
 {
 	while (true)
 	{
@@ -171,7 +171,7 @@ void the_blocking_loop(boost::asio::io_service& io_service, chat_client_handler&
 	}
 }
 
-void the_non_blocking_loop(boost::asio::io_service& io_service, chat_client_handler& handler)
+void the_non_blocking_loop(boost::asio::io_service& io_service, talkClient_handler& handler)
 {
 	while (true)
 	{
@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
 	boost::asio::io_service io_service;
 	boost::asio::io_service::work work(io_service);
 
-	chat_client_handler handler(io_service, host_name, service_name);
+	talkClient_handler handler(io_service, host_name, service_name);
 
 	the_non_blocking_loop(io_service, handler);
 

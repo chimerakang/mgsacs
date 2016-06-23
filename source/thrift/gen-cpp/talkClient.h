@@ -59,7 +59,7 @@ class talkClientIf {
    * @param ship
    */
   virtual void on_subscribeShip(const std::string& name, const Ship& ship) = 0;
-  virtual void on_subscribeShip_failed(const RequestException& exp) = 0;
+  virtual void on_subscribeShip_failed(const std::string& why) = 0;
 };
 
 class talkClientIfFactory {
@@ -116,7 +116,7 @@ class talkClientNull : virtual public talkClientIf {
   void on_subscribeShip(const std::string& /* name */, const Ship& /* ship */) {
     return;
   }
-  void on_subscribeShip_failed(const RequestException& /* exp */) {
+  void on_subscribeShip_failed(const std::string& /* why */) {
     return;
   }
 };
@@ -514,17 +514,17 @@ class talkClient_on_subscribeShip_failed_args {
 
   talkClient_on_subscribeShip_failed_args(const talkClient_on_subscribeShip_failed_args&);
   talkClient_on_subscribeShip_failed_args& operator=(const talkClient_on_subscribeShip_failed_args&);
-  talkClient_on_subscribeShip_failed_args() {
+  talkClient_on_subscribeShip_failed_args() : why() {
   }
 
   virtual ~talkClient_on_subscribeShip_failed_args() throw();
-  RequestException exp;
+  std::string why;
 
-  void __set_exp(const RequestException& val);
+  void __set_why(const std::string& val);
 
   bool operator == (const talkClient_on_subscribeShip_failed_args & rhs) const
   {
-    if (!(exp == rhs.exp))
+    if (!(why == rhs.why))
       return false;
     return true;
   }
@@ -545,7 +545,7 @@ class talkClient_on_subscribeShip_failed_pargs {
 
 
   virtual ~talkClient_on_subscribeShip_failed_pargs() throw();
-  const RequestException exp;
+  const std::string* why;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -594,8 +594,8 @@ class talkClientClient : virtual public talkClientIf {
   void send_on_unsubscribe_failed(const std::string& why);
   void on_subscribeShip(const std::string& name, const Ship& ship);
   void send_on_subscribeShip(const std::string& name, const Ship& ship);
-  void on_subscribeShip_failed(const RequestException& exp);
-  void send_on_subscribeShip_failed(const RequestException& exp);
+  void on_subscribeShip_failed(const std::string& why);
+  void send_on_subscribeShip_failed(const std::string& why);
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -743,13 +743,13 @@ class talkClientMultiface : virtual public talkClientIf {
     ifaces_[i]->on_subscribeShip(name, ship);
   }
 
-  void on_subscribeShip_failed(const RequestException& exp) {
+  void on_subscribeShip_failed(const std::string& why) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->on_subscribeShip_failed(exp);
+      ifaces_[i]->on_subscribeShip_failed(why);
     }
-    ifaces_[i]->on_subscribeShip_failed(exp);
+    ifaces_[i]->on_subscribeShip_failed(why);
   }
 
 };
@@ -800,8 +800,8 @@ class talkClientConcurrentClient : virtual public talkClientIf {
   void send_on_unsubscribe_failed(const std::string& why);
   void on_subscribeShip(const std::string& name, const Ship& ship);
   void send_on_subscribeShip(const std::string& name, const Ship& ship);
-  void on_subscribeShip_failed(const RequestException& exp);
-  void send_on_subscribeShip_failed(const RequestException& exp);
+  void on_subscribeShip_failed(const std::string& why);
+  void send_on_subscribeShip_failed(const std::string& why);
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

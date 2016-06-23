@@ -758,7 +758,7 @@ uint32_t talkClient_on_subscribeShip_failed_args::read(::apache::thrift::protoco
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_exp = false;
+  bool isset_why = false;
 
   while (true)
   {
@@ -769,9 +769,9 @@ uint32_t talkClient_on_subscribeShip_failed_args::read(::apache::thrift::protoco
     switch (fid)
     {
       case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->exp.read(iprot);
-          isset_exp = true;
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->why);
+          isset_why = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -785,7 +785,7 @@ uint32_t talkClient_on_subscribeShip_failed_args::read(::apache::thrift::protoco
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_exp)
+  if (!isset_why)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   return xfer;
 }
@@ -795,11 +795,10 @@ uint32_t talkClient_on_subscribeShip_failed_args::write(::apache::thrift::protoc
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("talkClient_on_subscribeShip_failed_args");
 
-  if (this->__isset.exp) {
-    xfer += oprot->writeFieldBegin("exp", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->exp.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
+  xfer += oprot->writeFieldBegin("why", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->why);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -815,11 +814,10 @@ uint32_t talkClient_on_subscribeShip_failed_pargs::write(::apache::thrift::proto
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("talkClient_on_subscribeShip_failed_pargs");
 
-  if (this->__isset.exp) {
-    xfer += oprot->writeFieldBegin("exp", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->exp.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
+  xfer += oprot->writeFieldBegin("why", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->why)));
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -996,18 +994,18 @@ void talkClientClient::send_on_subscribeShip(const std::string& name, const Ship
   oprot_->getTransport()->flush();
 }
 
-void talkClientClient::on_subscribeShip_failed(const RequestException& exp)
+void talkClientClient::on_subscribeShip_failed(const std::string& why)
 {
-  send_on_subscribeShip_failed(exp);
+  send_on_subscribeShip_failed(why);
 }
 
-void talkClientClient::send_on_subscribeShip_failed(const RequestException& exp)
+void talkClientClient::send_on_subscribeShip_failed(const std::string& why)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("on_subscribeShip_failed", ::apache::thrift::protocol::T_ONEWAY, cseqid);
 
   talkClient_on_subscribeShip_failed_pargs args;
-  args.exp = &exp;
+  args.why = &why;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1389,7 +1387,7 @@ void talkClientProcessor::process_on_subscribeShip_failed(int32_t, ::apache::thr
   }
 
   try {
-    iface_->on_subscribeShip_failed(args.exp);
+    iface_->on_subscribeShip_failed(args.why);
   } catch (const std::exception&) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "talkClient.on_subscribeShip_failed");
@@ -1609,19 +1607,19 @@ void talkClientConcurrentClient::send_on_subscribeShip(const std::string& name, 
   sentry.commit();
 }
 
-void talkClientConcurrentClient::on_subscribeShip_failed(const RequestException& exp)
+void talkClientConcurrentClient::on_subscribeShip_failed(const std::string& why)
 {
-  send_on_subscribeShip_failed(exp);
+  send_on_subscribeShip_failed(why);
 }
 
-void talkClientConcurrentClient::send_on_subscribeShip_failed(const RequestException& exp)
+void talkClientConcurrentClient::send_on_subscribeShip_failed(const std::string& why)
 {
   int32_t cseqid = 0;
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("on_subscribeShip_failed", ::apache::thrift::protocol::T_ONEWAY, cseqid);
 
   talkClient_on_subscribeShip_failed_pargs args;
-  args.exp = &exp;
+  args.why = &why;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

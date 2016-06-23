@@ -120,8 +120,6 @@ class Location;
 
 class Ship;
 
-class RequestException;
-
 typedef struct _ServiceInfo__isset {
   _ServiceInfo__isset() : ServiceName(false), AliasName(false), HostName(false), Version(false), ServicePort(false), Onlines(false) {}
   bool ServiceName :1;
@@ -356,60 +354,6 @@ class Ship {
 void swap(Ship &a, Ship &b);
 
 inline std::ostream& operator<<(std::ostream& out, const Ship& obj)
-{
-  obj.printTo(out);
-  return out;
-}
-
-typedef struct _RequestException__isset {
-  _RequestException__isset() : code(false), why(false) {}
-  bool code :1;
-  bool why :1;
-} _RequestException__isset;
-
-class RequestException : public ::apache::thrift::TException {
- public:
-
-  RequestException(const RequestException&);
-  RequestException& operator=(const RequestException&);
-  RequestException() : code((ErrorCode::type)0), why() {
-  }
-
-  virtual ~RequestException() throw();
-  ErrorCode::type code;
-  std::string why;
-
-  _RequestException__isset __isset;
-
-  void __set_code(const ErrorCode::type val);
-
-  void __set_why(const std::string& val);
-
-  bool operator == (const RequestException & rhs) const
-  {
-    if (!(code == rhs.code))
-      return false;
-    if (!(why == rhs.why))
-      return false;
-    return true;
-  }
-  bool operator != (const RequestException &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const RequestException & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-  virtual void printTo(std::ostream& out) const;
-  mutable std::string thriftTExceptionMessageHolder_;
-  const char* what() const throw();
-};
-
-void swap(RequestException &a, RequestException &b);
-
-inline std::ostream& operator<<(std::ostream& out, const RequestException& obj)
 {
   obj.printTo(out);
   return out;

@@ -5,8 +5,8 @@
 #include "../include/thrift_asio_server.hpp"
 #include "../include/thrift_asio_connection_management_mixin.hpp"
 /// gen by thrift
-#include <talkServer.h>
-#include <talkClient.h>
+#include "../thrift/gen-cpp/talkServer.h"
+#include "../thrift/gen-cpp/talkClient.h"
 #include <thread> // for sleep
 
 /**

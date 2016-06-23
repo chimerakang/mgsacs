@@ -29,6 +29,7 @@ class thrift_asio_transport
     , public boost::enable_shared_from_this<thrift_asio_transport>
 {
 	static constexpr size_t BUFFER_SIZE = 1024;
+    ///static size_t BUFFER_SIZE;
 
   public:
 	/*!
@@ -61,10 +62,12 @@ class thrift_asio_transport
 
     /// creates a thrift_asio_transport from a socket_ptr
 	thrift_asio_transport(socket_ptr socket, event_handlers* event_handlers)
-		: socket_(socket)
-		, event_handlers_(event_handlers)
+        :socket_(socket)
+		,event_handlers_(event_handlers)
+    
 	{
 		assert(event_handlers);
+        ///BUFFER_SIZE = 1024;
 	};
 
     virtual ~thrift_asio_transport()

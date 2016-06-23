@@ -119,12 +119,6 @@ struct Ship {
 	11: optional string texId,
 }
 
-/** invalid Request  */
-exception RequestException {
-    1: ErrorCode code;
-    2: string why;
-}
-
 /* talk server */
 service talkServer {
 
@@ -169,7 +163,7 @@ service talkClient {
   /// called, when a subscribe ship posted by another
   oneway void on_subscribeShip(1:required string name, 2:required Ship ship );
 
-  oneway void on_subscribeShip_failed( 1:required RequestException exp );
+  oneway void on_subscribeShip_failed( 1:required string why );
 
 
 }
