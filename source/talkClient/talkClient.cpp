@@ -52,7 +52,7 @@ class talkClient_handler : public betabugs::networking::thrift_asio_client<
 
 	virtual void on_setUserName_succeeded(const int64_t userId) override
 	{
-		read_message();
+        std::cout << "user name id: " << userId << std::endl;
 	}
 
 	virtual void on_subscribe(const int64_t topicId) override {
