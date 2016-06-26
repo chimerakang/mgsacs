@@ -784,4 +784,242 @@ void Ship::printTo(std::ostream& out) const {
   out << ")";
 }
 
+
+User::~User() throw() {
+}
+
+
+void User::__set_userId(const std::string& val) {
+  this->userId = val;
+}
+
+void User::__set_name(const std::string& val) {
+  this->name = val;
+}
+
+uint32_t User::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_userId = false;
+  bool isset_name = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->userId);
+          isset_userId = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->name);
+          isset_name = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_userId)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_name)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t User::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("User");
+
+  xfer += oprot->writeFieldBegin("userId", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->userId);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("name", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->name);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(User &a, User &b) {
+  using ::std::swap;
+  swap(a.userId, b.userId);
+  swap(a.name, b.name);
+}
+
+User::User(const User& other7) {
+  userId = other7.userId;
+  name = other7.name;
+}
+User& User::operator=(const User& other8) {
+  userId = other8.userId;
+  name = other8.name;
+  return *this;
+}
+void User::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "User(";
+  out << "userId=" << to_string(userId);
+  out << ", " << "name=" << to_string(name);
+  out << ")";
+}
+
+
+Subscriber::~Subscriber() throw() {
+}
+
+
+void Subscriber::__set_topicId(const int64_t val) {
+  this->topicId = val;
+}
+
+void Subscriber::__set_users(const std::vector<User> & val) {
+  this->users = val;
+}
+
+uint32_t Subscriber::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_topicId = false;
+  bool isset_users = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->topicId);
+          isset_topicId = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->users.clear();
+            uint32_t _size9;
+            ::apache::thrift::protocol::TType _etype12;
+            xfer += iprot->readListBegin(_etype12, _size9);
+            this->users.resize(_size9);
+            uint32_t _i13;
+            for (_i13 = 0; _i13 < _size9; ++_i13)
+            {
+              xfer += this->users[_i13].read(iprot);
+            }
+            xfer += iprot->readListEnd();
+          }
+          isset_users = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_topicId)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_users)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Subscriber::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Subscriber");
+
+  xfer += oprot->writeFieldBegin("topicId", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->topicId);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("users", ::apache::thrift::protocol::T_LIST, 2);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->users.size()));
+    std::vector<User> ::const_iterator _iter14;
+    for (_iter14 = this->users.begin(); _iter14 != this->users.end(); ++_iter14)
+    {
+      xfer += (*_iter14).write(oprot);
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(Subscriber &a, Subscriber &b) {
+  using ::std::swap;
+  swap(a.topicId, b.topicId);
+  swap(a.users, b.users);
+}
+
+Subscriber::Subscriber(const Subscriber& other15) {
+  topicId = other15.topicId;
+  users = other15.users;
+}
+Subscriber& Subscriber::operator=(const Subscriber& other16) {
+  topicId = other16.topicId;
+  users = other16.users;
+  return *this;
+}
+void Subscriber::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "Subscriber(";
+  out << "topicId=" << to_string(topicId);
+  out << ", " << "users=" << to_string(users);
+  out << ")";
+}
+
 } // namespace

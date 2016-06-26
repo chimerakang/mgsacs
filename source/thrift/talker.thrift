@@ -119,6 +119,16 @@ struct Ship {
 	11: optional string texId,
 }
 
+struct User {
+	1: required string userId,
+	2: required string name,
+}
+
+struct Subscriber {
+  1: required i64 topicId,
+  2: required list<User> users,
+}
+
 /* talk server */
 service talkServer {
 

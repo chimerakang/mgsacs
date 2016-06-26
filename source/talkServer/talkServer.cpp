@@ -7,6 +7,7 @@
 /// gen by thrift
 #include "../thrift/gen-cpp/talkServer.h"
 #include "../thrift/gen-cpp/talkClient.h"
+#include "../thrift/gen-cpp/talker_types.h"
 #include "../thrift/gen-cpp/talker_constants.h"
 #include <thread> // for sleep
 
@@ -19,8 +20,12 @@ struct session {
 
 	}
 
+    /// maps protocol instances to clients
+    typedef std::map<std::string, kiwi::Subscriber> subscriber_map;
+
 	std::string user_name;
 	kiwi::talkClientClient client;
+    subscriber_map subscriberMap;
 };
 
 
@@ -52,7 +57,12 @@ class talkServer_handler
 		virtual void subscribe(const std::string& topic) override {
 			assert(current_client_);
 
-            int topicId = 456;
+            if (current_client_->subscriberMap.find(topic) == current_client_->subscriberMap.end() ) {
+                
+            }
+
+            
+                        int topicId = 456;
             current_client_->client.on_subscribe(topicId );
 
 		}

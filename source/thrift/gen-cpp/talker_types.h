@@ -120,6 +120,10 @@ class Location;
 
 class Ship;
 
+class User;
+
+class Subscriber;
+
 typedef struct _ServiceInfo__isset {
   _ServiceInfo__isset() : ServiceName(false), AliasName(false), HostName(false), Version(false), ServicePort(false), Onlines(false) {}
   bool ServiceName :1;
@@ -354,6 +358,96 @@ class Ship {
 void swap(Ship &a, Ship &b);
 
 inline std::ostream& operator<<(std::ostream& out, const Ship& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+class User {
+ public:
+
+  User(const User&);
+  User& operator=(const User&);
+  User() : userId(), name() {
+  }
+
+  virtual ~User() throw();
+  std::string userId;
+  std::string name;
+
+  void __set_userId(const std::string& val);
+
+  void __set_name(const std::string& val);
+
+  bool operator == (const User & rhs) const
+  {
+    if (!(userId == rhs.userId))
+      return false;
+    if (!(name == rhs.name))
+      return false;
+    return true;
+  }
+  bool operator != (const User &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const User & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(User &a, User &b);
+
+inline std::ostream& operator<<(std::ostream& out, const User& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+class Subscriber {
+ public:
+
+  Subscriber(const Subscriber&);
+  Subscriber& operator=(const Subscriber&);
+  Subscriber() : topicId(0) {
+  }
+
+  virtual ~Subscriber() throw();
+  int64_t topicId;
+  std::vector<User>  users;
+
+  void __set_topicId(const int64_t val);
+
+  void __set_users(const std::vector<User> & val);
+
+  bool operator == (const Subscriber & rhs) const
+  {
+    if (!(topicId == rhs.topicId))
+      return false;
+    if (!(users == rhs.users))
+      return false;
+    return true;
+  }
+  bool operator != (const Subscriber &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Subscriber & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(Subscriber &a, Subscriber &b);
+
+inline std::ostream& operator<<(std::ostream& out, const Subscriber& obj)
 {
   obj.printTo(out);
   return out;
