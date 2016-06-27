@@ -898,7 +898,7 @@ Subscriber::~Subscriber() throw() {
 }
 
 
-void Subscriber::__set_topicId(const int64_t val) {
+void Subscriber::__set_topicId(const std::string& val) {
   this->topicId = val;
 }
 
@@ -930,8 +930,8 @@ uint32_t Subscriber::read(::apache::thrift::protocol::TProtocol* iprot) {
     switch (fid)
     {
       case 1:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->topicId);
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->topicId);
           isset_topicId = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -978,8 +978,8 @@ uint32_t Subscriber::write(::apache::thrift::protocol::TProtocol* oprot) const {
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("Subscriber");
 
-  xfer += oprot->writeFieldBegin("topicId", ::apache::thrift::protocol::T_I64, 1);
-  xfer += oprot->writeI64(this->topicId);
+  xfer += oprot->writeFieldBegin("topicId", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->topicId);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldBegin("users", ::apache::thrift::protocol::T_LIST, 2);

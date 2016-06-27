@@ -200,8 +200,8 @@ uint32_t talkClient_on_setUserName_succeeded_args::read(::apache::thrift::protoc
     switch (fid)
     {
       case 1:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->userId);
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->userId);
           isset_userId = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -226,8 +226,8 @@ uint32_t talkClient_on_setUserName_succeeded_args::write(::apache::thrift::proto
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("talkClient_on_setUserName_succeeded_args");
 
-  xfer += oprot->writeFieldBegin("userId", ::apache::thrift::protocol::T_I64, 1);
-  xfer += oprot->writeI64(this->userId);
+  xfer += oprot->writeFieldBegin("userId", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->userId);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -245,8 +245,8 @@ uint32_t talkClient_on_setUserName_succeeded_pargs::write(::apache::thrift::prot
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("talkClient_on_setUserName_succeeded_pargs");
 
-  xfer += oprot->writeFieldBegin("userId", ::apache::thrift::protocol::T_I64, 1);
-  xfer += oprot->writeI64((*(this->userId)));
+  xfer += oprot->writeFieldBegin("userId", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->userId)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -364,8 +364,8 @@ uint32_t talkClient_on_subscribe_args::read(::apache::thrift::protocol::TProtoco
     switch (fid)
     {
       case 1:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->topicId);
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->topicId);
           isset_topicId = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -390,8 +390,8 @@ uint32_t talkClient_on_subscribe_args::write(::apache::thrift::protocol::TProtoc
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("talkClient_on_subscribe_args");
 
-  xfer += oprot->writeFieldBegin("topicId", ::apache::thrift::protocol::T_I64, 1);
-  xfer += oprot->writeI64(this->topicId);
+  xfer += oprot->writeFieldBegin("topicId", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->topicId);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -409,8 +409,8 @@ uint32_t talkClient_on_subscribe_pargs::write(::apache::thrift::protocol::TProto
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("talkClient_on_subscribe_pargs");
 
-  xfer += oprot->writeFieldBegin("topicId", ::apache::thrift::protocol::T_I64, 1);
-  xfer += oprot->writeI64((*(this->topicId)));
+  xfer += oprot->writeFieldBegin("topicId", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->topicId)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -861,12 +861,12 @@ void talkClientClient::send_on_getVersion_failed(const std::string& why)
   oprot_->getTransport()->flush();
 }
 
-void talkClientClient::on_setUserName_succeeded(const int64_t userId)
+void talkClientClient::on_setUserName_succeeded(const std::string& userId)
 {
   send_on_setUserName_succeeded(userId);
 }
 
-void talkClientClient::send_on_setUserName_succeeded(const int64_t userId)
+void talkClientClient::send_on_setUserName_succeeded(const std::string& userId)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("on_setUserName_succeeded", ::apache::thrift::protocol::T_ONEWAY, cseqid);
@@ -899,12 +899,12 @@ void talkClientClient::send_on_setUserName_failed(const std::string& why)
   oprot_->getTransport()->flush();
 }
 
-void talkClientClient::on_subscribe(const int64_t topicId)
+void talkClientClient::on_subscribe(const std::string& topicId)
 {
   send_on_subscribe(topicId);
 }
 
-void talkClientClient::send_on_subscribe(const int64_t topicId)
+void talkClientClient::send_on_subscribe(const std::string& topicId)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("on_subscribe", ::apache::thrift::protocol::T_ONEWAY, cseqid);
@@ -1453,12 +1453,12 @@ void talkClientConcurrentClient::send_on_getVersion_failed(const std::string& wh
   sentry.commit();
 }
 
-void talkClientConcurrentClient::on_setUserName_succeeded(const int64_t userId)
+void talkClientConcurrentClient::on_setUserName_succeeded(const std::string& userId)
 {
   send_on_setUserName_succeeded(userId);
 }
 
-void talkClientConcurrentClient::send_on_setUserName_succeeded(const int64_t userId)
+void talkClientConcurrentClient::send_on_setUserName_succeeded(const std::string& userId)
 {
   int32_t cseqid = 0;
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -1497,12 +1497,12 @@ void talkClientConcurrentClient::send_on_setUserName_failed(const std::string& w
   sentry.commit();
 }
 
-void talkClientConcurrentClient::on_subscribe(const int64_t topicId)
+void talkClientConcurrentClient::on_subscribe(const std::string& topicId)
 {
   send_on_subscribe(topicId);
 }
 
-void talkClientConcurrentClient::send_on_subscribe(const int64_t topicId)
+void talkClientConcurrentClient::send_on_subscribe(const std::string& topicId)
 {
   int32_t cseqid = 0;
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);

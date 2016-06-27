@@ -125,7 +125,7 @@ struct User {
 }
 
 struct Subscriber {
-  1: required i64 topicId,
+  1: required string topicId,
   2: required list<User> users,
 }
 
@@ -144,7 +144,7 @@ service talkServer {
   oneway void unsubscribe( 1:required string topic);
 
   /** ship api */
-  oneway void postShip( 1:required string channel, 2:required Ship ship);
+  oneway void postShip( 1:required string topic, 2:required Ship ship);
 }
 
 
@@ -157,12 +157,12 @@ service talkClient {
 
 
   /** set user name api */
-  oneway void on_setUserName_succeeded(1:required i64 userId);
+  oneway void on_setUserName_succeeded(1:required string userId);
   oneway void on_setUserName_failed(1:required string why );
 
 
   /** subscribe topic api */
-  oneway void on_subscribe(1:required i64 topicId);
+  oneway void on_subscribe(1:required string topicId);
   oneway void on_subscribe_failed( 1:required string why );
 
   /** unsubscribe topic api */

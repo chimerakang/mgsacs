@@ -2,6 +2,8 @@
 // Created by Chimera Kang on 16/06/21.
 //
 
+
+
 #include "../include/thrift_asio_server.hpp"
 #include "../include/thrift_asio_connection_management_mixin.hpp"
 /// gen by thrift
@@ -10,6 +12,10 @@
 #include "../thrift/gen-cpp/talker_types.h"
 #include "../thrift/gen-cpp/talker_constants.h"
 #include <thread> // for sleep
+#include <vector>
+#include <boost/uuid/uuid.hpp>            // uuid class
+#include <boost/uuid/uuid_generators.hpp> // generators
+#include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
 
 /**
 * a chat-session holds the user name and a client
@@ -20,12 +26,8 @@ struct session {
 
 	}
 
-    /// maps protocol instances to clients
-    typedef std::map<std::string, kiwi::Subscriber> subscriber_map;
-
-	std::string user_name;
+    kiwi::User user;
 	kiwi::talkClientClient client;
-    subscriber_map subscriberMap;
 };
 
 
@@ -42,47 +44,132 @@ class talkServer_handler
 
 		virtual void setUserName(const std::string& name) override {
 			for (auto& p : clients_) {
-				if (p.second->user_name == name) {
+				if (p.second->user.name == name) {
 					p.second->client.on_setUserName_failed("username already taken");
 					return;
 				}
 			}
 
 			assert(current_client_);
-			current_client_->user_name = name;
-            int userId = 123;
-            current_client_->client.on_setUserName_succeeded(userId);
+            current_client_->user.__set_name(name);
+            
+            std::string id = this->genUserId();
+            current_client_->user.__set_userId(id);
+            current_client_->client.on_setUserName_succeeded( current_client_->user.userId );
+            
+            /// add to session map
+            this->sessionMap[name] = &current_client_->client;
 		}
 
 		virtual void subscribe(const std::string& topic) override {
 			assert(current_client_);
-
-            if (current_client_->subscriberMap.find(topic) == current_client_->subscriberMap.end() ) {
-                
-            }
-
             
-                        int topicId = 456;
-            current_client_->client.on_subscribe(topicId );
+            
+            std::map<std::string, kiwi::Subscriber>::iterator it = this->subscriberMap.find(topic);
 
+            /// not found topic
+            if (it == this->subscriberMap.end() ) {
+                kiwi::Subscriber subscriber;
+                
+                std::string id = this->genUserId();
+                subscriber.__set_topicId(id);
+                subscriber.users.push_back( current_client_->user );
+                this->subscriberMap[topic] = subscriber;
+                current_client_->client.on_subscribe(id);
+                
+            } else {
+                /// find subscriber
+                bool found = false;
+                std::vector<kiwi::User>::iterator user_iter;
+                for( user_iter = it->second.users.begin(); user_iter != it->second.users.end(); user_iter++ ) {
+                    if( user_iter->name == current_client_->user.name ) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if( !found ) {
+                    it->second.users.push_back( current_client_->user );
+                    
+                }
+            }
 		}
 
 		virtual void unsubscribe(const std::string& topic) override {
 			assert(current_client_);
+            
+            std::map<std::string, kiwi::Subscriber>::iterator it = this->subscriberMap.find(topic);
+            
+            if (it != this->subscriberMap.end() ) {
+                
+                for( int i=0; i<it->second.users.size(); i++ ) {
+                    if( it->second.users[i].name == current_client_->user.name ) {
+                        it->second.users.erase( it->second.users.begin()+i );
+                        current_client_->client.on_unsubscribe_succeeded();
+                        break;
+                    }
+                    
+                }
+            } else {
+                /// not found topic
+                current_client_->client.on_unsubscribe_failed("not found this topic");
+            }
 
-			current_client_->client.on_unsubscribe_succeeded();
+
 
 		}
 
 
-        virtual void postShip(const std::string& channel, const kiwi::Ship& ship) override {
+        virtual void postShip(const std::string& topic, const kiwi::Ship& ship) override {
 			assert(current_client_);
-			for (auto& s : clients_) {
-				if (s.second != current_client_) {
-					s.second->client.on_subscribeShip( current_client_->user_name , ship );
-				}
-			}
+            
+            std::map<std::string, kiwi::Subscriber>::iterator it = this->subscriberMap.find(topic);
+            if (it != this->subscriberMap.end() ) {
+                
+                for( auto & user_iter : it->second.users ) {
+                    
+                    std::string user_name = user_iter.name;
+                    std::map<std::string, kiwi::talkClientClient*>::iterator session_it;
+                    session_it = this->sessionMap.find(user_name);
+                    
+                    /// found session and post ship to each subscriber
+                    if( session_it != this->sessionMap.end() ) {
+                        
+                        if (session_it->second != &current_client_->client) {
+                            session_it->second->on_subscribeShip( current_client_->user.name , ship );
+                        }
+                    }
+                }
+            }
 		}
+        
+    private:
+        std::string genUserId() {
+            boost::uuids::uuid uuid = boost::uuids::random_generator()();
+            
+            std::string user_id = boost::lexical_cast<std::string>(uuid);
+            return user_id;
+        }
+        
+        kiwi::talkClientClient* getSession(std::string userName) {
+            std::map<std::string, kiwi::talkClientClient*>::iterator it = this->sessionMap.find(userName);
+            
+            if( it != this->sessionMap.end() ) {
+                return it->second;
+            }
+            
+            return nullptr;
+
+        }
+        
+    private:
+        /// maps protocol instances to clients
+        typedef std::map<std::string, kiwi::Subscriber> subscriber_map;
+        typedef std::map<std::string, kiwi::talkClientClient*> session_map;
+        
+        subscriber_map subscriberMap;
+        session_map sessionMap;
+        
 };
 
 

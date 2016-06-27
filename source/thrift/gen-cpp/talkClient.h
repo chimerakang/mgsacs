@@ -35,7 +35,7 @@ class talkClientIf {
    * 
    * @param userId
    */
-  virtual void on_setUserName_succeeded(const int64_t userId) = 0;
+  virtual void on_setUserName_succeeded(const std::string& userId) = 0;
   virtual void on_setUserName_failed(const std::string& why) = 0;
 
   /**
@@ -43,7 +43,7 @@ class talkClientIf {
    * 
    * @param topicId
    */
-  virtual void on_subscribe(const int64_t topicId) = 0;
+  virtual void on_subscribe(const std::string& topicId) = 0;
   virtual void on_subscribe_failed(const std::string& why) = 0;
 
   /**
@@ -95,13 +95,13 @@ class talkClientNull : virtual public talkClientIf {
   void on_getVersion_failed(const std::string& /* why */) {
     return;
   }
-  void on_setUserName_succeeded(const int64_t /* userId */) {
+  void on_setUserName_succeeded(const std::string& /* userId */) {
     return;
   }
   void on_setUserName_failed(const std::string& /* why */) {
     return;
   }
-  void on_subscribe(const int64_t /* topicId */) {
+  void on_subscribe(const std::string& /* topicId */) {
     return;
   }
   void on_subscribe_failed(const std::string& /* why */) {
@@ -213,13 +213,13 @@ class talkClient_on_setUserName_succeeded_args {
 
   talkClient_on_setUserName_succeeded_args(const talkClient_on_setUserName_succeeded_args&);
   talkClient_on_setUserName_succeeded_args& operator=(const talkClient_on_setUserName_succeeded_args&);
-  talkClient_on_setUserName_succeeded_args() : userId(0) {
+  talkClient_on_setUserName_succeeded_args() : userId() {
   }
 
   virtual ~talkClient_on_setUserName_succeeded_args() throw();
-  int64_t userId;
+  std::string userId;
 
-  void __set_userId(const int64_t val);
+  void __set_userId(const std::string& val);
 
   bool operator == (const talkClient_on_setUserName_succeeded_args & rhs) const
   {
@@ -244,7 +244,7 @@ class talkClient_on_setUserName_succeeded_pargs {
 
 
   virtual ~talkClient_on_setUserName_succeeded_pargs() throw();
-  const int64_t* userId;
+  const std::string* userId;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -299,13 +299,13 @@ class talkClient_on_subscribe_args {
 
   talkClient_on_subscribe_args(const talkClient_on_subscribe_args&);
   talkClient_on_subscribe_args& operator=(const talkClient_on_subscribe_args&);
-  talkClient_on_subscribe_args() : topicId(0) {
+  talkClient_on_subscribe_args() : topicId() {
   }
 
   virtual ~talkClient_on_subscribe_args() throw();
-  int64_t topicId;
+  std::string topicId;
 
-  void __set_topicId(const int64_t val);
+  void __set_topicId(const std::string& val);
 
   bool operator == (const talkClient_on_subscribe_args & rhs) const
   {
@@ -330,7 +330,7 @@ class talkClient_on_subscribe_pargs {
 
 
   virtual ~talkClient_on_subscribe_pargs() throw();
-  const int64_t* topicId;
+  const std::string* topicId;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -580,12 +580,12 @@ class talkClientClient : virtual public talkClientIf {
   void send_on_getVersion(const std::string& version);
   void on_getVersion_failed(const std::string& why);
   void send_on_getVersion_failed(const std::string& why);
-  void on_setUserName_succeeded(const int64_t userId);
-  void send_on_setUserName_succeeded(const int64_t userId);
+  void on_setUserName_succeeded(const std::string& userId);
+  void send_on_setUserName_succeeded(const std::string& userId);
   void on_setUserName_failed(const std::string& why);
   void send_on_setUserName_failed(const std::string& why);
-  void on_subscribe(const int64_t topicId);
-  void send_on_subscribe(const int64_t topicId);
+  void on_subscribe(const std::string& topicId);
+  void send_on_subscribe(const std::string& topicId);
   void on_subscribe_failed(const std::string& why);
   void send_on_subscribe_failed(const std::string& why);
   void on_unsubscribe_succeeded();
@@ -680,7 +680,7 @@ class talkClientMultiface : virtual public talkClientIf {
     ifaces_[i]->on_getVersion_failed(why);
   }
 
-  void on_setUserName_succeeded(const int64_t userId) {
+  void on_setUserName_succeeded(const std::string& userId) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
@@ -698,7 +698,7 @@ class talkClientMultiface : virtual public talkClientIf {
     ifaces_[i]->on_setUserName_failed(why);
   }
 
-  void on_subscribe(const int64_t topicId) {
+  void on_subscribe(const std::string& topicId) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
@@ -786,12 +786,12 @@ class talkClientConcurrentClient : virtual public talkClientIf {
   void send_on_getVersion(const std::string& version);
   void on_getVersion_failed(const std::string& why);
   void send_on_getVersion_failed(const std::string& why);
-  void on_setUserName_succeeded(const int64_t userId);
-  void send_on_setUserName_succeeded(const int64_t userId);
+  void on_setUserName_succeeded(const std::string& userId);
+  void send_on_setUserName_succeeded(const std::string& userId);
   void on_setUserName_failed(const std::string& why);
   void send_on_setUserName_failed(const std::string& why);
-  void on_subscribe(const int64_t topicId);
-  void send_on_subscribe(const int64_t topicId);
+  void on_subscribe(const std::string& topicId);
+  void send_on_subscribe(const std::string& topicId);
   void on_subscribe_failed(const std::string& why);
   void send_on_subscribe_failed(const std::string& why);
   void on_unsubscribe_succeeded();

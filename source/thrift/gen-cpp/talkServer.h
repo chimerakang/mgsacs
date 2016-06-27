@@ -45,10 +45,10 @@ class talkServerIf {
   /**
    * ship api
    * 
-   * @param channel
+   * @param topic
    * @param ship
    */
-  virtual void postShip(const std::string& channel, const Ship& ship) = 0;
+  virtual void postShip(const std::string& topic, const Ship& ship) = 0;
 };
 
 class talkServerIfFactory {
@@ -90,7 +90,7 @@ class talkServerNull : virtual public talkServerIf {
   void unsubscribe(const std::string& /* topic */) {
     return;
   }
-  void postShip(const std::string& /* channel */, const Ship& /* ship */) {
+  void postShip(const std::string& /* topic */, const Ship& /* ship */) {
     return;
   }
 };
@@ -267,20 +267,20 @@ class talkServer_postShip_args {
 
   talkServer_postShip_args(const talkServer_postShip_args&);
   talkServer_postShip_args& operator=(const talkServer_postShip_args&);
-  talkServer_postShip_args() : channel() {
+  talkServer_postShip_args() : topic() {
   }
 
   virtual ~talkServer_postShip_args() throw();
-  std::string channel;
+  std::string topic;
   Ship ship;
 
-  void __set_channel(const std::string& val);
+  void __set_topic(const std::string& val);
 
   void __set_ship(const Ship& val);
 
   bool operator == (const talkServer_postShip_args & rhs) const
   {
-    if (!(channel == rhs.channel))
+    if (!(topic == rhs.topic))
       return false;
     if (!(ship == rhs.ship))
       return false;
@@ -303,7 +303,7 @@ class talkServer_postShip_pargs {
 
 
   virtual ~talkServer_postShip_pargs() throw();
-  const std::string* channel;
+  const std::string* topic;
   const Ship* ship;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -343,8 +343,8 @@ class talkServerClient : virtual public talkServerIf {
   void send_subscribe(const std::string& topic);
   void unsubscribe(const std::string& topic);
   void send_unsubscribe(const std::string& topic);
-  void postShip(const std::string& channel, const Ship& ship);
-  void send_postShip(const std::string& channel, const Ship& ship);
+  void postShip(const std::string& topic, const Ship& ship);
+  void send_postShip(const std::string& topic, const Ship& ship);
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -437,13 +437,13 @@ class talkServerMultiface : virtual public talkServerIf {
     ifaces_[i]->unsubscribe(topic);
   }
 
-  void postShip(const std::string& channel, const Ship& ship) {
+  void postShip(const std::string& topic, const Ship& ship) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->postShip(channel, ship);
+      ifaces_[i]->postShip(topic, ship);
     }
-    ifaces_[i]->postShip(channel, ship);
+    ifaces_[i]->postShip(topic, ship);
   }
 
 };
@@ -484,8 +484,8 @@ class talkServerConcurrentClient : virtual public talkServerIf {
   void send_subscribe(const std::string& topic);
   void unsubscribe(const std::string& topic);
   void send_unsubscribe(const std::string& topic);
-  void postShip(const std::string& channel, const Ship& ship);
-  void send_postShip(const std::string& channel, const Ship& ship);
+  void postShip(const std::string& topic, const Ship& ship);
+  void send_postShip(const std::string& topic, const Ship& ship);
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

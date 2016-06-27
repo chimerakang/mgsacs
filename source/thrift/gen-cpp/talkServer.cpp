@@ -329,7 +329,7 @@ uint32_t talkServer_postShip_args::read(::apache::thrift::protocol::TProtocol* i
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_channel = false;
+  bool isset_topic = false;
   bool isset_ship = false;
 
   while (true)
@@ -342,8 +342,8 @@ uint32_t talkServer_postShip_args::read(::apache::thrift::protocol::TProtocol* i
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->channel);
-          isset_channel = true;
+          xfer += iprot->readString(this->topic);
+          isset_topic = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -365,7 +365,7 @@ uint32_t talkServer_postShip_args::read(::apache::thrift::protocol::TProtocol* i
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_channel)
+  if (!isset_topic)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_ship)
     throw TProtocolException(TProtocolException::INVALID_DATA);
@@ -377,8 +377,8 @@ uint32_t talkServer_postShip_args::write(::apache::thrift::protocol::TProtocol* 
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("talkServer_postShip_args");
 
-  xfer += oprot->writeFieldBegin("channel", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->channel);
+  xfer += oprot->writeFieldBegin("topic", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->topic);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldBegin("ship", ::apache::thrift::protocol::T_STRUCT, 2);
@@ -400,8 +400,8 @@ uint32_t talkServer_postShip_pargs::write(::apache::thrift::protocol::TProtocol*
   apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("talkServer_postShip_pargs");
 
-  xfer += oprot->writeFieldBegin("channel", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->channel)));
+  xfer += oprot->writeFieldBegin("topic", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->topic)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldBegin("ship", ::apache::thrift::protocol::T_STRUCT, 2);
@@ -488,18 +488,18 @@ void talkServerClient::send_unsubscribe(const std::string& topic)
   oprot_->getTransport()->flush();
 }
 
-void talkServerClient::postShip(const std::string& channel, const Ship& ship)
+void talkServerClient::postShip(const std::string& topic, const Ship& ship)
 {
-  send_postShip(channel, ship);
+  send_postShip(topic, ship);
 }
 
-void talkServerClient::send_postShip(const std::string& channel, const Ship& ship)
+void talkServerClient::send_postShip(const std::string& topic, const Ship& ship)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("postShip", ::apache::thrift::protocol::T_ONEWAY, cseqid);
 
   talkServer_postShip_pargs args;
-  args.channel = &channel;
+  args.topic = &topic;
   args.ship = &ship;
   args.write(oprot_);
 
@@ -697,7 +697,7 @@ void talkServerProcessor::process_postShip(int32_t, ::apache::thrift::protocol::
   }
 
   try {
-    iface_->postShip(args.channel, args.ship);
+    iface_->postShip(args.topic, args.ship);
   } catch (const std::exception&) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "talkServer.postShip");
@@ -806,19 +806,19 @@ void talkServerConcurrentClient::send_unsubscribe(const std::string& topic)
   sentry.commit();
 }
 
-void talkServerConcurrentClient::postShip(const std::string& channel, const Ship& ship)
+void talkServerConcurrentClient::postShip(const std::string& topic, const Ship& ship)
 {
-  send_postShip(channel, ship);
+  send_postShip(topic, ship);
 }
 
-void talkServerConcurrentClient::send_postShip(const std::string& channel, const Ship& ship)
+void talkServerConcurrentClient::send_postShip(const std::string& topic, const Ship& ship)
 {
   int32_t cseqid = 0;
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("postShip", ::apache::thrift::protocol::T_ONEWAY, cseqid);
 
   talkServer_postShip_pargs args;
-  args.channel = &channel;
+  args.topic = &topic;
   args.ship = &ship;
   args.write(oprot_);
 

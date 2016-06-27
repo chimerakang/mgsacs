@@ -414,14 +414,14 @@ class Subscriber {
 
   Subscriber(const Subscriber&);
   Subscriber& operator=(const Subscriber&);
-  Subscriber() : topicId(0) {
+  Subscriber() : topicId() {
   }
 
   virtual ~Subscriber() throw();
-  int64_t topicId;
+  std::string topicId;
   std::vector<User>  users;
 
-  void __set_topicId(const int64_t val);
+  void __set_topicId(const std::string& val);
 
   void __set_users(const std::vector<User> & val);
 
